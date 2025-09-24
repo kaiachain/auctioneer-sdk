@@ -14,7 +14,6 @@ import (
 	"github.com/kaiachain/kaia/blockchain/types"
 	"github.com/kaiachain/kaia/client"
 	"github.com/kaiachain/kaia/common"
-	"github.com/kaiachain/kaia/common/hexutil"
 	"github.com/kaiachain/kaia/crypto"
 	"github.com/kaiachain/kaia/params"
 )
@@ -44,19 +43,6 @@ const TARGET_CONTRACT_ABI_STR = `
   "type": "function"
 }]
 `
-
-type SendBid struct {
-	Sender       common.Address `json:"sender"`
-	ToAddr       common.Address `json:"toAddr"`
-	TargetTxHash common.Hash    `json:"targetTxHash"`
-	TargetTxRaw  hexutil.Bytes  `json:"targetTxRaw"`
-	TargetBlkNum uint64         `json:"targetBlkNum"`
-	Bid          hexutil.Big    `json:"bid"`
-	Nonce        uint64         `json:"nonce"`
-	CallGasLimit uint64         `json:"callGasLimit"`
-	CallData     hexutil.Bytes  `json:"callData"`
-	SearcherSig  hexutil.Bytes  `json:"searcherSig"`
-}
 
 var (
 	TARGET_CONTRACT_ABI, _ = abi.JSON(bytes.NewReader([]byte(TARGET_CONTRACT_ABI_STR)))
