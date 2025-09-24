@@ -2,10 +2,6 @@ module github.com/kaiachain/auctioneer-sdk
 
 go 1.23.7
 
-replace github.com/kaiachain/kaia => github.com/hyunsooda/kaia v0.0.11
-
-require github.com/kaiachain/kaia v0.0.0-00010101000000-000000000000
-
 require (
 	github.com/AndreasBriese/bbloom v0.0.0-20190306092124-e2d15f34fcf9 // indirect
 	github.com/BurntSushi/toml v1.4.1-0.20240526193622-a339e1f7089c // indirect
@@ -58,6 +54,7 @@ require (
 	github.com/jackpal/go-nat-pmp v1.0.2 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
+	github.com/kaiachain/kaia v1.0.4-0.20250923001534-bd2358caa7a4 // indirect
 	github.com/klauspost/compress v1.16.0 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/kr/text v0.2.0 // indirect

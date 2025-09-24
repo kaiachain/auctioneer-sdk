@@ -1,2 +1,2 @@
 ### TODO
-Replace `kaia` repository to upstream
+Replace `kaia` repository to upstream (from `dev` to `release` tag)
