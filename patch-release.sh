@@ -22,7 +22,6 @@ echo "New     version: $NEW_VERSION"
 
 # Tag create and push
 git tag $NEW_VERSION
-git push origin main
 git push origin $NEW_VERSION
 
 echo "Done: $NEW_VERSION"
