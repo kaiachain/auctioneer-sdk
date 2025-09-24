@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 
 	"github.com/kaiachain/kaia/common"
 	"github.com/kaiachain/kaia/common/hexutil"
@@ -50,6 +51,10 @@ func GetDialUrl(host string, searcherKey *ecdsa.PrivateKey) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
+	// trim `http` and `https` prefix
+	host = strings.TrimPrefix(host, "https://")
+	host = strings.TrimPrefix(host, "http://")
 	u := url.URL{
 		Scheme:   "ws",
 		Host:     host,
