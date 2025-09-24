@@ -21,6 +21,7 @@ echo "Current version: ${LATEST_TAG:-none}"
 echo "New     version: $NEW_VERSION"
 
 # Tag create and push
+git pull origin main
 git tag $NEW_VERSION
 git push origin $NEW_VERSION
 
