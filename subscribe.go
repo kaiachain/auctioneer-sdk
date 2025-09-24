@@ -40,7 +40,7 @@ func GetSubscriptionNonce(host string, addr common.Address) (uint64, error) {
 }
 
 // GetDialUrl returns a websocket url which targets subscription request
-func GetDialUrl(host, path string, nonce uint64, searcherKey *ecdsa.PrivateKey) (string, error) {
+func GetDialUrl(host string, searcherKey *ecdsa.PrivateKey) (string, error) {
 	searcherAddr := crypto.PubkeyToAddress(searcherKey.PublicKey)
 	nonce, err := GetSubscriptionNonce(host, searcherAddr)
 	if err != nil {
@@ -53,7 +53,7 @@ func GetDialUrl(host, path string, nonce uint64, searcherKey *ecdsa.PrivateKey) 
 	u := url.URL{
 		Scheme:   "ws",
 		Host:     host,
-		Path:     path,
+		Path:     "api/v1/subscribe/pendingtxs",
 		RawQuery: fmt.Sprintf("sig=%s&nonce=%d", hexutil.Encode(h), nonce),
 	}
 	return u.String(), nil
