@@ -1,2 +1,11 @@
+### Auctioneer SDK
+
+This SDK provides a couple of functions to interact with auctioneer endpoint.
+The provided functions helps for:
+- Bid submission
+- Subscribe pending transactions
+
+The [example](./example) directory contains examples how to deposit/withdraw, submit bid, and subscribe pending transaction
+
 ### TODO
 Replace `kaia` repository to upstream (from `dev` to `release` tag)
