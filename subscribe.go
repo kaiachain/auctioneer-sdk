@@ -56,7 +56,7 @@ func GetDialUrl(host string, searcherKey *ecdsa.PrivateKey) (string, error) {
 	host = strings.TrimPrefix(host, "https://")
 	host = strings.TrimPrefix(host, "http://")
 	u := url.URL{
-		Scheme:   "ws",
+		Scheme:   "wss",
 		Host:     host,
 		Path:     "api/v1/subscribe/pendingtxs",
 		RawQuery: fmt.Sprintf("sig=%s&nonce=%d", hexutil.Encode(h), nonce),
