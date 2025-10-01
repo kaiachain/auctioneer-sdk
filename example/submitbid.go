@@ -62,9 +62,15 @@ var (
 	entrypoint = common.HexToAddress("0xC259f758eD00Dcf743F28dB8193154Aa9B3862de")
 	// TODO: Replace this with Kairos target contract
 	targetContract = common.HexToAddress("0x75B5608722ca06eE159Cc9850CEF470fe100105B")
+
+	AUCTIONEER_HOST = "kaia-auctioneer-qa.in.kaia.io"
 )
 
 func main() {
+	ips, err := net.LookupIP(AUCTIONEER_HOST)
+	if err != nil {
+		panic(err)
+	}
 	var (
 		headCh = make(chan *types.Header)
 		// TODO: Replace this with Kairos entrypoint url
@@ -87,14 +93,14 @@ func main() {
 			if err != nil {
 				panic(err)
 			}
-			req.Host = "kaia-auctioneer-qa.in.kaia.io"
+			req.Host = AUCTIONEER_HOST
 			req.Header.Set("Content-Type", "application/json")
 			client := &http.Client{
 				Timeout: 10 * time.Second,
 				Transport: &http.Transport{
 					DialContext: func(ctx context.Context, network, addr string) (net.Conn, error) {
-						if addr == "kaia-auctioneer-qa.in.kaia.io:443" {
-							addr = "34.117.100.247:443"
+						if addr == fmt.Sprintf("%s:443", AUCTIONEER_HOST) {
+							addr = fmt.Sprintf("%s:443", ips[0].String())
 						}
 						dialer := &net.Dialer{}
 						return dialer.DialContext(ctx, network, addr)
