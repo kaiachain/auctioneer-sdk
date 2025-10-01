@@ -28,9 +28,9 @@ func mustParseErrorMsg(respBody io.ReadCloser) string {
 
 func main() {
 	// TODO: Replace with your private key
-	searcherKey, _ := crypto.HexToECDSA("e059d5ced4fe8b0420d1c9761842c4806c2cfa555448b238c9b5a3c8ff546730")
+	searcherKey, _ := crypto.HexToECDSA("a38f5bbf491d6e175050cde649f012ceeb766d8b0de976492d15ef0b0e2de1ec")
 	// TODO: Replace the url with correct auctioneer endpoint
-	url, err := auction_sdk.GetDialUrl("http://localhost:8080", searcherKey)
+	url, err := auction_sdk.GetDialUrl("https://kaia-auctioneer-qa.in.kaia.io", searcherKey)
 	if err != nil {
 		panic(err)
 	}
