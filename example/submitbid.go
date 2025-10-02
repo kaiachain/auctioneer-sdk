@@ -74,10 +74,25 @@ func main() {
 	var (
 		headCh = make(chan *types.Header)
 		// TODO: Replace this with Kairos entrypoint url
-		c, _ = client.Dial("ws://35.216.106.245:8552")
+		c, _   = client.Dial("ws://35.216.106.245:8552")
+		client = &http.Client{
+			Timeout: 10 * time.Second,
+			Transport: &http.Transport{
+				DialContext: func(ctx context.Context, network, addr string) (net.Conn, error) {
+					if addr == fmt.Sprintf("%s:443", AUCTIONEER_HOST) {
+						addr = fmt.Sprintf("%s:443", ips[0].String())
+					}
+					dialer := &net.Dialer{}
+					return dialer.DialContext(ctx, network, addr)
+				},
+			},
+		}
 	)
-	c.SubscribeNewHead(context.Background(), headCh)
+	go pingLoop(client)
+	// wait for a first TLs handshake
+	time.Sleep(time.Second * 3)
 
+	c.SubscribeNewHead(context.Background(), headCh)
 	for {
 		select {
 		case header := <-headCh:
@@ -95,18 +110,7 @@ func main() {
 			}
 			req.Host = AUCTIONEER_HOST
 			req.Header.Set("Content-Type", "application/json")
-			client := &http.Client{
-				Timeout: 10 * time.Second,
-				Transport: &http.Transport{
-					DialContext: func(ctx context.Context, network, addr string) (net.Conn, error) {
-						if addr == fmt.Sprintf("%s:443", AUCTIONEER_HOST) {
-							addr = fmt.Sprintf("%s:443", ips[0].String())
-						}
-						dialer := &net.Dialer{}
-						return dialer.DialContext(ctx, network, addr)
-					},
-				},
-			}
+
 			resp, err := client.Do(req)
 			if err != nil {
 				panic(err)
@@ -116,6 +120,24 @@ func main() {
 			}
 			return
 		}
+	}
+}
+
+// this ping loop sends a ping request to keep the HTTPS connection to avoid TLS handshake overhead when a bid is submitted
+func pingLoop(c *http.Client) {
+	req, err := http.NewRequest("GET", fmt.Sprintf("https://%s/api/v1/ping", AUCTIONEER_HOST), nil)
+	if err != nil {
+		panic(err)
+	}
+	for {
+		resp, err := c.Do(req)
+		if err != nil {
+			panic(err)
+		}
+		if resp.StatusCode != http.StatusOK {
+			panic("resp status code is not 200")
+		}
+		time.Sleep(time.Second * 100)
 	}
 }
 
