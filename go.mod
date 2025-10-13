@@ -1,6 +1,6 @@
 module github.com/kaiachain/auctioneer-sdk
 
-go 1.23.7
+go 1.25
 
 require (
 	github.com/AndreasBriese/bbloom v0.0.0-20190306092124-e2d15f34fcf9 // indirect
