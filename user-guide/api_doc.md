@@ -3,6 +3,12 @@ This document mainly describes the auctioneer API usage and its MEV ecosystem.
 ### Auctiioneer RESTful APIs
 The auctioneer server exposes four APIs.
 
+- `api/v1/ping`
+    - It can be used to keep the connection alive, thereby avoiding the initial handshake.
+    ```shell
+    > curl -X GET http://34.64.220.227:8080/api/v1/ping
+    ```
+
 - `api/v1/auction/config`
     - Searchers can check out configuration of auctineer
     ```shell

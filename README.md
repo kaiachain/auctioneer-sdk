@@ -11,7 +11,8 @@ The [example](./example) directory contains examples how to deposit/withdraw, su
 Please refer to the [guide](./user-guide)
 
 ### TODO
-Replace `kaia` repository to upstream (from `dev` to `release` tag)
+- Replace `kaia` repository to upstream (from `dev` to `release` tag)
+- Replace the URL to Kairos auctioneer
 
 ### Issues & Support
 If you have any questions or find a bug, please feel free to open an issue.
