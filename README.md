@@ -7,6 +7,9 @@ The provided functions helps for:
 
 The [example](./example) directory contains examples how to deposit/withdraw, submit bid, and subscribe pending transaction
 
+### User guide
+Please refer to the [guide](./user-guide)
+
 ### TODO
 Replace `kaia` repository to upstream (from `dev` to `release` tag)
 
