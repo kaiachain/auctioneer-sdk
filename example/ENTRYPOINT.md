@@ -2,11 +2,15 @@ This document mainly describes the AuctionEntryPoint contract and its usage.
 
 # Contract: AuctionEntryPoint
 
-AuctionEntryPoint contract is a contract that manages the main auction process. The validator will execute the auction transaction requested by searchers. Please find the execution sequence of BidTx through the AuctionEntryPoint contract in [KIP-249](https://kips.kaia.io/KIPs/kip-249).
+AuctionEntryPoint contract is a contract where the bid transaction is executed. The validator will execute the auction transaction requested by searchers. Please find the execution sequence of BidTx through the AuctionEntryPoint contract in [KIP-249](https://kips.kaia.io/KIPs/kip-249).
 
 ### Nonce
 
 The AuctionEntryPoint contract manages the monotonic-increasing nonce for each searcher to prevent replay attack. You can check the current nonce of a searcher by calling the `nonces(address searcher)` function. Please note that the nonce will be increased even if searcher's requested call is failed.
+
+```
+cast call <AuctionEntryPoint contract address> "nonces(address)(uint256)" <searcher address> --rpc-url <rpc url>
+```
 
 ### Access Control
 
