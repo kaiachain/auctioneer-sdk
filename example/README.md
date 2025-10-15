@@ -1,68 +1,24 @@
-This document mainly describes how to deposit and witdraw on Auction contract
+This document introduces the example usage of auctioneer SDK code for submitting a bid and subscribing to pending transactions.
 
-<!-- TODO: add a contract link on Kairos / Mainnet -->
-# Contract: AuctionDepositVault
+# Contract
 
-AuctionDepositVault contract is a contract where searchers can deposit amount of bid to be used for bidding.
+Before interacting with the auctioneer, it's necessary to deposit the minimum required amount to the AuctionDepositVault contract. Also it's strongly recommended to understand the overall auction process through the [KIP-249](https://kips.kaia.io/KIPs/kip-249). For better understanding, it introduces the detailed guide for searcher to interact with the AuctionEntryPoint and AuctionDepositVault contracts.
 
-### Deposit
-There are two moethods to deposit, `deposit()` and `depositFor(address searcher)`.
+### Contract: AuctionEntryPoint
 
-The first method deposits using the sender's balance and the deposit amount is setteld with the sender.
-While, the second method deposits with an account whose have enough balance and settled with the parameter address.
+Please refer to the [ENTRYPOINT.md](./ENTRYPOINT.md) for the details of the AuctionEntryPoint contract.
 
+### Contract: AuctionDepositVault
 
-The command below shows how to deposit via `cast` tool.
-<!-- TODO: Change AuctionDepositVault address -->
-<!-- TODO: Change entrypoint url -->
-<!-- cast send --private-key 0x03b7971e86b6cb750875fa8846d2ae0deb58e80f1801da97a6d79f1c2463f7c3 0x7C9bf955F7534eB2BAfD4d213DD62FA067922C58 "deposit()" --rpc-url "http://35.216.106.245:8551" --confirmations 0 --value 10000000000000000000 -->
-```
-cast send --private-key <your private key> <AuctionDepositVault contract address> "deposit()" --rpc-url "http://35.216.106.245:8551" --confirmations 0 --value 10000000000000000000
-```
-e.g., `cast send --private-key 0x... 0x... "deposit()" --rpc-url "http://35.216.106.245:8551" --confirmations 0 --value 10000000000000000000`
+Please refer to the [DEPOSIT.md](./DEPOSIT.md) for the details of the AuctionDepositVault contract.
 
-For the RPC URL, you can use any EN node including [public entrypoint node](https://docs.kaia.io/references/public-en/).
+# SDK Usage
 
-To check your deposit balance, you can call the function `depositBalances(address)(uint256)`.
-<!-- TODO: Change AuctionDepositVault address -->
-<!-- TODO: Change entrypoint url -->
-```
-cast call <AuctionDepositVault contract address> "depositBalances(address)(uint256)" <your account address> --rpc-url "http://35.216.106.245:8551"
-```
-e.g., `cast call 0x... "depositBalances(address)(uint256)" 0x... --rpc-url "http://35.216.106.245:8551"`
+The auctioneer SDK provides a couple of functions to interact with auctioneer endpoint.
+The provided functions helps for:
 
-### DepositFor
-
-<!-- TODO: Change AuctionDepositVault address -->
-<!-- TODO: Change entrypoint url -->
-<!-- cast send --private-key 0x03b7971e86b6cb750875fa8846d2ae0deb58e80f1801da97a6d79f1c2463f7c3 0x7C9bf955F7534eB2BAfD4d213DD62FA067922C58 "depositFor(address)" 0x583254e7c638c0f685da164bbe043316a7693077 --rpc-url "http://35.216.106.245:8551" --confirmations 0 --value 10000000000000000000 -->
-```
-cast send --private-key <your private key> <AuctionDepositVault contract address> "depositFor(address)" <account address to settle deposit> --rpc-url "http://35.216.106.245:8551" --confirmations 0 --value 10000000000000000000
-```
-e.g., `cast send --private-key 0x... 0x... "depositFor(address)" 0x... --rpc-url "http://35.216.106.245:8551" --confirmations 0 --value 10000000000000000000`
-
-### Withdraw
-There are two steps to withdraw your deposit amount.
-1. Call `reserveWithdraw()`.
-<!-- cast send --private-key 0x03b7971e86b6cb750875fa8846d2ae0deb58e80f1801da97a6d79f1c2463f7c3 0x7C9bf955F7534eB2BAfD4d213DD62FA067922C58 "reserveWithdraw()" --rpc-url "http://35.216.106.245:8551" --confirmations 0 -->
-```
-cast send --private-key <your private key> <AuctionDepositVault contract address> "reserveWithdraw()" --rpc-url "http://35.216.106.245:8551" --confirmations 0
-```
-e.g., `cast send --private-key 0x... 0x... "reserveWithdraw()" --rpc-url "http://35.216.106.245:8551" --confirmations 0`
-
-This step reserves withdraw and makes lock time for 60 second. After 60 seconds, the reserved withdraw amount can be transferred through `withdraw()` function.
-
-
-2. Call `withdraw()`.
-
-You can call `withdraw()` with the following command example.
-
-```
-cast send --private-key <your private key> <AuctionDepositVault contract address> "withdraw()" --rpc-url "http://35.216.106.245:8551" --confirmations 0
-```
-e.g., `cast send --private-key 0x... 0x... "withdraw()" --rpc-url "http://35.216.106.245:8551" --confirmations 0`
-
-<!-- cast send --private-key 0x03b7971e86b6cb750875fa8846d2ae0deb58e80f1801da97a6d79f1c2463f7c3 0x7C9bf955F7534eB2BAfD4d213DD62FA067922C58 "withdraw()" --rpc-url "http://35.216.106.245:8551" --confirmations 0 -->
+- Bid submission
+- Subscribe pending transactions
 
 ### Code: Bid submission
 
@@ -80,5 +36,5 @@ Signing the bid using the searcher's EIP-712 signature is a critical step in the
 
 Searchers who have deposited the minimum required amount can subscribe to live pending transactions via the Auctioneer RESTful API.
 This API requires a valid EIP-712 signature from the deposit address to authenticate the subscription request.
-Additionally, nonce value is reqruied to prevent replay request from thrid party, in just case of where the signed message is exposed accidentally.
+Additionally, nonce value is required to prevent replay request from third party, in just case of where the signed message is exposed accidentally.
 Refer to the relevant part of the code for instructions on how to generate this signature.
