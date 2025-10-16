@@ -59,7 +59,7 @@ var (
 	searcher   = crypto.PubkeyToAddress(searcherKey.PublicKey)
 	user       = crypto.PubkeyToAddress(userKey.PublicKey)
 
-	entrypoint = common.HexToAddress("0xC259f758eD00Dcf743F28dB8193154Aa9B3862de")
+	entrypoint = common.HexToAddress("0x0ac2872Ed033e55897c2595f33cd5C7FA8D24878")
 	// TODO: Replace this with Kairos target contract
 	targetContract = common.HexToAddress("0x75B5608722ca06eE159Cc9850CEF470fe100105B")
 
@@ -115,6 +115,7 @@ func main() {
 			if err != nil {
 				panic(err)
 			}
+			defer resp.Body.Close()
 			if resp.StatusCode != http.StatusOK {
 				panic(fmt.Sprintf("status code = %d error msg = %s", resp.StatusCode, mustParseErrorMsg(resp.Body)))
 			}
