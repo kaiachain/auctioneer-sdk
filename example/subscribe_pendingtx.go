@@ -53,7 +53,7 @@ func main() {
 			break
 		}
 		tx := convertMsgToTx(msg)
-		log.Printf("Received pending transaction: %s, %s", tx.Hash().String(), tx.Time().String())
+		fmt.Printf("Received pending transaction: %s\n", tx.Hash().String())
 	}
 }
 
