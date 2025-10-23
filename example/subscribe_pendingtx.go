@@ -53,11 +53,25 @@ func main() {
 			break
 		}
 		tx := convertMsgToTx(msg)
-		log.Printf("Received pending transaction: %s, %s", tx.Hash().String(), tx.Time().String())
+		fmt.Printf("Received pending transaction: %s\n", tx.Hash().String())
 	}
 }
 
 func convertMsgToTx(msg []byte) *types.Transaction {
+	// NOTE: Uncomment this code block if you want to check out when a tx has been settled in CN
+	// {
+	// 	var tx map[string]any
+	// 	if err := json.Unmarshal(msg, &tx); err != nil {
+	// 		panic(err)
+	// 	}
+	// 	for k, v := range tx {
+	// 		if k == "time" {
+	// 			fmt.Println("tx time:", v)
+	// 			break
+	// 		}
+	// 	}
+	// }
+
 	var tx types.Transaction
 	if err := json.Unmarshal(msg, &tx); err != nil {
 		log.Fatal(err)
