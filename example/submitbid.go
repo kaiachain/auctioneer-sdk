@@ -105,6 +105,10 @@ func main() {
 
 			// TODO: Replace with Kairos auctioneer URL
 			req, err := http.NewRequest("POST", fmt.Sprintf("https://%s/api/v1/auction/send", AUCTIONEER_HOST), bytes.NewBuffer(jsonBid))
+
+			{
+				fmt.Println(string(jsonBid))
+			}
 			if err != nil {
 				panic(err)
 			}
