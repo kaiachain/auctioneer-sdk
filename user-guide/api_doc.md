@@ -6,13 +6,13 @@ The auctioneer server exposes four APIs.
 - `api/v1/ping`
     - It can be used to keep the connection alive, thereby avoiding the initial handshake.
     ```shell
-    > curl -X GET http://34.64.220.227:8080/api/v1/ping
+    > curl -X GET <auctioneer endpoint>/api/v1/ping
     ```
 
 - `api/v1/auction/config`
     - Searchers can check out configuration of auctineer
     ```shell
-    > curl -X GET http://34.64.220.227:8080/api/v1/auction/config
+    > curl -X GET <auctioneer endpoint>/api/v1/auction/config
     > {"version":"v0.0.1","auctioneer":"0x83d26f1534084bc37c476878cC0C3604165BCF4e","entrypoint":"0x74567C431d0D72A0d3Be077F884cCB9A4CF059c6","vaultaddr":"0x976281659A1794Db2FFfb3DF4c400aa24E5f7f95","auctionwindow":"200ms","minBid":"1e-11","searcherSubscription"
     :true,"searchers":1001}
     ```
@@ -20,7 +20,7 @@ The auctioneer server exposes four APIs.
 - `api/v1/auction/send`
     - Searchers can send a bid via this API. The simple usage is as follows:
     ```shell
-    > curl -X POST http://<auctioneer server url>:8080/api/v1/auction/send \
+    > curl -X POST <auctioneer endpoint>/api/v1/auction/send \
     -H "Content-Type: application/json" \
     -d '{
         "targetTxRaw": "0xf8674785066720b30083015f909496bd8e216c0d894c0486341288bf486d5686c5b601808207f4a0a97fa83b989a6d66acc942d1cbd70f548c21e24eefea12e72f8c27ba4369a434a01900811315ba3c64055e9778470f438128b54a46712cc032f25a1487
@@ -43,7 +43,7 @@ The auctioneer server exposes four APIs.
 
 - `api/v1/subscribe/pendingtxs`
     ```shell
-    > websocat "ws://<auctioneer endpoint url>:8080/api/v1/subscribe/pendingtxs?sig=0x7ba88835c8124cc7799574a96cdfd1043664848d778906f6743c31876f6b4b9f60d2ea5f85b0ebd81914a36fc50f823b2254c5522dbb81d0e4e1082d635007c401&nonce=<searhcer's nonce>"        
+    > websocat "wss://<auctioneer endpoint>/api/v1/subscribe/pendingtxs?sig=0x7ba88835c8124cc7799574a96cdfd1043664848d778906f6743c31876f6b4b9f60d2ea5f85b0ebd81914a36fc50f823b2254c5522dbb81d0e4e1082d635007c401&nonce=<searhcer's nonce>"
     If the signature is invalid, corresponding error message will return
     > {"code":412,"message":"invalid signature length"}
     If already connected,
@@ -55,7 +55,7 @@ The auctioneer server exposes four APIs.
 
 - `api/v1/subscribe/nonce`
      ```shell
-     > curl "http://localhost:8080/api/v1/subscribe/nonce?address=<your address>"
+     > curl "<auctioneer endpoint>/api/v1/subscribe/nonce?address=<your address>"
      > <number>
      ```
 
