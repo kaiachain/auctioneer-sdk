@@ -97,7 +97,7 @@ func main() {
 		select {
 		case header := <-headCh:
 			var (
-				targetBlkNum = big.NewInt(header.Number.Int64() + 2)
+				targetBlkNum = big.NewInt(header.Number.Int64() + 1)
 				bid          = genBid(c, targetBlkNum)
 				jsonBid, _   = json.Marshal(bid)
 			)
@@ -110,7 +110,6 @@ func main() {
 			}
 			req.Host = AUCTIONEER_HOST
 			req.Header.Set("Content-Type", "application/json")
-
 			resp, err := client.Do(req)
 			if err != nil {
 				panic(err)
