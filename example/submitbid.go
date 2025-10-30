@@ -7,7 +7,9 @@ import (
 	"fmt"
 	"io"
 	"math/big"
+	"net"
 	"net/http"
+	"time"
 
 	auction_sdk "github.com/kaiachain/auctioneer-sdk"
 	"github.com/kaiachain/kaia/accounts/abi"
@@ -52,24 +54,45 @@ var (
 	signer    = types.LatestSignerForChainID(chainId)
 	// TODO: Replace this with your actual key
 	searcherKey, _ = crypto.HexToECDSA("e059d5ced4fe8b0420d1c9761842c4806c2cfa555448b238c9b5a3c8ff546730")
-	// TODO: Not required. See the description of `genTx()`
+	// TODO: Not required in real world scenario. See the description of `genTx()`
 	userKey, _ = crypto.HexToECDSA("199b8876d8091e0cbc251c18301dc85691f669ed0d4963df3018a3b2e6c3b461")
 	searcher   = crypto.PubkeyToAddress(searcherKey.PublicKey)
 	user       = crypto.PubkeyToAddress(userKey.PublicKey)
 
-	entrypoint = common.HexToAddress("0xC259f758eD00Dcf743F28dB8193154Aa9B3862de")
-	// TODO: Replace this with your target contract
+	entrypoint = common.HexToAddress("0x0ac2872Ed033e55897c2595f33cd5C7FA8D24878")
+	// TODO: Replace this with Kairos target contract
 	targetContract = common.HexToAddress("0x75B5608722ca06eE159Cc9850CEF470fe100105B")
+
+	AUCTIONEER_HOST = "kaia-auctioneer-qa.in.kaia.io"
 )
 
 func main() {
+	ips, err := net.LookupIP(AUCTIONEER_HOST)
+	if err != nil {
+		panic(err)
+	}
 	var (
 		headCh = make(chan *types.Header)
-		// TODO: Replace this with your entrypoint url
-		c, _ = client.Dial("ws://35.216.106.245:8552")
+		// TODO: Replace this with Kairos entrypoint url
+		c, _   = client.Dial("ws://35.216.106.245:8552")
+		client = &http.Client{
+			Timeout: 10 * time.Second,
+			Transport: &http.Transport{
+				DialContext: func(ctx context.Context, network, addr string) (net.Conn, error) {
+					if addr == fmt.Sprintf("%s:443", AUCTIONEER_HOST) {
+						addr = fmt.Sprintf("%s:443", ips[0].String())
+					}
+					dialer := &net.Dialer{}
+					return dialer.DialContext(ctx, network, addr)
+				},
+			},
+		}
 	)
-	c.SubscribeNewHead(context.Background(), headCh)
+	go pingLoop(client)
+	// wait for a first TLs handshake
+	time.Sleep(time.Second * 3)
 
+	c.SubscribeNewHead(context.Background(), headCh)
 	for {
 		select {
 		case header := <-headCh:
@@ -79,16 +102,42 @@ func main() {
 				jsonBid, _   = json.Marshal(bid)
 			)
 			fmt.Println("target block number:", targetBlkNum)
-			// TODO: Replace the auctioneer URL
-			resp, err := http.Post("http://localhost:8080/api/v1/auction/send", "application/json", bytes.NewBuffer(jsonBid))
+
+			// TODO: Replace with Kairos auctioneer URL
+			req, err := http.NewRequest("POST", fmt.Sprintf("https://%s/api/v1/auction/send", AUCTIONEER_HOST), bytes.NewBuffer(jsonBid))
 			if err != nil {
 				panic(err)
 			}
+			req.Host = AUCTIONEER_HOST
+			req.Header.Set("Content-Type", "application/json")
+			resp, err := client.Do(req)
+			if err != nil {
+				panic(err)
+			}
+			defer resp.Body.Close()
 			if resp.StatusCode != http.StatusOK {
 				panic(fmt.Sprintf("status code = %d error msg = %s", resp.StatusCode, mustParseErrorMsg(resp.Body)))
 			}
 			return
 		}
+	}
+}
+
+// this ping loop sends a ping request to keep the HTTPS connection to avoid TLS handshake overhead when a bid is submitted
+func pingLoop(c *http.Client) {
+	req, err := http.NewRequest("GET", fmt.Sprintf("https://%s/api/v1/ping", AUCTIONEER_HOST), nil)
+	if err != nil {
+		panic(err)
+	}
+	for {
+		resp, err := c.Do(req)
+		if err != nil {
+			panic(err)
+		}
+		if resp.StatusCode != http.StatusOK {
+			panic("resp status code is not 200")
+		}
+		time.Sleep(time.Second * 100)
 	}
 }
 
@@ -105,7 +154,7 @@ func genBid(c *client.Client, headerNum *big.Int) auction_sdk.SendBid {
 		targetContract,
 		tx.Hash(),
 		headerNum,
-		mustDecodeStrToKaia("0.02"),
+		mustDecodeStrToKaia("1.0001"),
 		nonce.Uint64(),
 		GAS_LIMIT,
 		genContractCall(),
@@ -119,7 +168,7 @@ func genBid(c *client.Client, headerNum *big.Int) auction_sdk.SendBid {
 	return *sendBid
 }
 
-// TODO: This is example calldata. Replace it with your desired one
+// NOTE: This is example calldata. Replace it with your desired one
 func genContractCall() []byte {
 	data, _ := TARGET_CONTRACT_ABI.Pack("inc")
 	return data
@@ -142,7 +191,7 @@ func getGasPriceAndNonce(c *client.Client, addr common.Address) (*big.Int, uint6
 	return gasPrice, nonce
 }
 
-// TODO: This is unnecessary transaction in real-word scenario because it will be replaced with actual arbitrage transaction
+// NOTE: This is unnecessary transaction in real-word scenario because it will be replaced with actual arbitrage transaction
 func genTx(c *client.Client) *types.Transaction {
 	var (
 		gasPrice, nonce = getGasPriceAndNonce(c, user)

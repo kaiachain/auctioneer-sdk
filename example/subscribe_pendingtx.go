@@ -28,9 +28,9 @@ func mustParseErrorMsg(respBody io.ReadCloser) string {
 
 func main() {
 	// TODO: Replace with your private key
-	searcherKey, _ := crypto.HexToECDSA("e059d5ced4fe8b0420d1c9761842c4806c2cfa555448b238c9b5a3c8ff546730")
+	searcherKey, _ := crypto.HexToECDSA("a38f5bbf491d6e175050cde649f012ceeb766d8b0de976492d15ef0b0e2de1ec")
 	// TODO: Replace the url with correct auctioneer endpoint
-	url, err := auction_sdk.GetDialUrl("http://localhost:8080", searcherKey)
+	url, err := auction_sdk.GetDialUrl("https://kaia-auctioneer-qa.in.kaia.io", searcherKey)
 	if err != nil {
 		panic(err)
 	}
@@ -53,11 +53,25 @@ func main() {
 			break
 		}
 		tx := convertMsgToTx(msg)
-		log.Printf("Received pending transaction: %s, %s", tx.Hash().String(), tx.Time().String())
+		fmt.Printf("Received pending transaction: %s\n", tx.Hash().String())
 	}
 }
 
 func convertMsgToTx(msg []byte) *types.Transaction {
+	// NOTE: Uncomment this code block if you want to check out when a tx has been settled in CN
+	// {
+	// 	var tx map[string]any
+	// 	if err := json.Unmarshal(msg, &tx); err != nil {
+	// 		panic(err)
+	// 	}
+	// 	for k, v := range tx {
+	// 		if k == "time" {
+	// 			fmt.Println("tx time:", v)
+	// 			break
+	// 		}
+	// 	}
+	// }
+
 	var tx types.Transaction
 	if err := json.Unmarshal(msg, &tx); err != nil {
 		log.Fatal(err)
