@@ -64,6 +64,8 @@ var (
 	targetContract = common.HexToAddress("0x75B5608722ca06eE159Cc9850CEF470fe100105B")
 
 	AUCTIONEER_HOST = "kaia-auctioneer-qa.in.kaia.io"
+	// TODO: Replace this with Kairos entrypoint url
+	EN_ENDPOOINT_URL = "ws://35.216.106.245:8552"
 )
 
 func main() {
@@ -73,8 +75,7 @@ func main() {
 	}
 	var (
 		headCh = make(chan *types.Header)
-		// TODO: Replace this with Kairos entrypoint url
-		c, _   = client.Dial("ws://35.216.106.245:8552")
+		c, _   = client.Dial(EN_ENDPOOINT_URL)
 		client = &http.Client{
 			Timeout: 10 * time.Second,
 			Transport: &http.Transport{
