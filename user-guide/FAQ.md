@@ -2,7 +2,7 @@ This document mainly describes FAQ on Kaia MEV ecosystem.
 
 ### 1. Subscription
 - Pending transaction subscription is not allowed two more connections per searcher address.
-- Connections are automatically closed after 24 hours. During a rolling update, the connection is closed with a message indicating the server update is in progress.
+- Connections are automatically closed after 24 hours. The connection may be closed eailir 24 hours if rolling updats is in progress.
 
 ### 2. API Latency
 
