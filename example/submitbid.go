@@ -119,7 +119,6 @@ func main() {
 			)
 			fmt.Println("target block number:", targetBlkNum)
 
-			// TODO: Replace with Kairos auctioneer URL
 			req, err := http.NewRequest("POST", fmt.Sprintf("https://%s/api/v1/auction/send", AUCTIONEER_HOST), bytes.NewBuffer(jsonBid))
 			if err != nil {
 				panic(err)
