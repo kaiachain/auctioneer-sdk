@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"context"
+	"crypto/ecdsa"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -49,26 +50,40 @@ const TARGET_CONTRACT_ABI_STR = `
 var (
 	TARGET_CONTRACT_ABI, _ = abi.JSON(bytes.NewReader([]byte(TARGET_CONTRACT_ABI_STR)))
 
-	chainId   = big.NewInt(8127)
-	GAS_LIMIT = uint64(10000000)
-	signer    = types.LatestSignerForChainID(chainId)
-	// TODO: Replace this with your actual key
-	searcherKey, _ = crypto.HexToECDSA("e059d5ced4fe8b0420d1c9761842c4806c2cfa555448b238c9b5a3c8ff546730")
-	// TODO: Not required in real world scenario. See the description of `genTx()`
-	userKey, _ = crypto.HexToECDSA("199b8876d8091e0cbc251c18301dc85691f669ed0d4963df3018a3b2e6c3b461")
-	searcher   = crypto.PubkeyToAddress(searcherKey.PublicKey)
-	user       = crypto.PubkeyToAddress(userKey.PublicKey)
+	chainId     = big.NewInt(1001)
+	GAS_LIMIT   = uint64(10000000)
+	signer      = types.LatestSignerForChainID(chainId)
+	searcherKey *ecdsa.PrivateKey
+	userKey     *ecdsa.PrivateKey
+	searcher    common.Address
+	user        common.Address
 
-	entrypoint = common.HexToAddress("0x0ac2872Ed033e55897c2595f33cd5C7FA8D24878")
-	// TODO: Replace this with Kairos target contract
-	targetContract = common.HexToAddress("0x75B5608722ca06eE159Cc9850CEF470fe100105B")
+	entrypoint     = common.HexToAddress("0x2fF66A8b9f133ca4774bEAd723b8a92fA1e28480")
+	targetContract = common.HexToAddress("0xA9852ca2f22c218Ca4A9331710be287DA505E5C0")
 
-	AUCTIONEER_HOST = "kaia-auctioneer-qa.in.kaia.io"
-	// TODO: Replace this with Kairos entrypoint url
-	EN_ENDPOOINT_URL = "ws://35.216.106.245:8552"
+	AUCTIONEER_HOST  = "auctioneer-kairos.kaia.io"
+	EN_ENDPOOINT_URL = "wss://public-en-kairos.node.kaia.io/ws"
 )
 
 func main() {
+	// TODO: Replace this with your actual key
+	newSeacherKey, err := crypto.HexToECDSA("00000000000000000000000000000")
+	if err != nil {
+		fmt.Println("Check searcher's private key")
+		panic(err)
+	}
+	searcherKey = newSeacherKey
+	searcher = crypto.PubkeyToAddress(searcherKey.PublicKey)
+	// TODO: Not required in real world scenario. See the description of `genTx()`
+	// TODO: Replace this with your actual key
+	newUserKey, err := crypto.HexToECDSA("0x00000000000000000000000000000")
+	if err != nil {
+		fmt.Println("Check user's private key")
+		panic(err)
+	}
+	userKey = newUserKey
+	user = crypto.PubkeyToAddress(userKey.PublicKey)
+
 	ips, err := net.LookupIP(AUCTIONEER_HOST)
 	if err != nil {
 		panic(err)
@@ -155,7 +170,7 @@ func genBid(c *client.Client, headerNum *big.Int) auction_sdk.SendBid {
 		targetContract,
 		tx.Hash(),
 		headerNum,
-		mustDecodeStrToKaia("1.0001"),
+		mustDecodeStrToKaia("1.0001"), // TODO: you can specify your desired specific amount of bidding
 		nonce.Uint64(),
 		GAS_LIMIT,
 		genContractCall(),
