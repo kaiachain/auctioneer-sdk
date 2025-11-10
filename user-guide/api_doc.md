@@ -20,20 +20,7 @@ The auctioneer server exposes four APIs.
 - `api/v1/auction/send`
     - Searchers can send a bid via this API. The simple usage is as follows:
     ```shell
-    > curl -X POST <auctioneer endpoint>/api/v1/auction/send \
-    -H "Content-Type: application/json" \
-    -d '{
-        "targetTxRaw": "0xf8674785066720b30083015f909496bd8e216c0d894c0486341288bf486d5686c5b601808207f4a0a97fa83b989a6d66acc942d1cbd70f548c21e24eefea12e72f8c27ba4369a434a01900811315ba3c64055e9778470f438128b54a46712cc032f25a1487
-        "sender": "0x96Bd8E216c0D894C0486341288Bf486d5686C5b6",
-        "toAddr": "0x96Bd8E216c0D894C0486341288Bf486d5686C5b6",
-        "targetTxHash": "0xacb81e7c775471be3e286a461701436f74b7bf7b951096f979b8557d870f246e",
-        "targetBlkNum": 1,
-        "bid": "0x1",
-        "nonce": 1,
-        "callGasLimit": 1,
-        "callData": "0x1",
-        "searcherSig": "0x9f92d0f25af58f402d39ecebea9d06d24d665d5ccea0bc61188596106e8944386e0204ed795701a30d9552dca5ba4ba054ac3aeeebc4570712be89aee08798be01"
-    }'
+    > curl -X POST <auctioneer endpoint>/api/v1/auction/send -H "Content-Type: application/json" -d '{"targetTxRaw": "0xf86982015285066720b30083989680940e87586680f3cb725bc6753d6ba5752d14859a9e0180823fa2a0fdc0d5c72957e0d11bbca3dacec04e94759e28575decfb003217754a65f2fb01a01f23b11c73f4e1c30038378a4452974edfa586b9b1dccbc8c97c27d02bf7da60","sender": "0x96Bd8E216c0D894C0486341288Bf486d5686C5b6","toAddr": "0x96Bd8E216c0D894C0486341288Bf486d5686C5b6","targetTxHash": "0xacb81e7c775471be3e286a461701436f74b7bf7b951096f979b8557d870f246e","targetBlkNum": 1,"bid": "0x1","nonce": 1,"callGasLimit": 1,"callData": "0x00","searcherSig": "0x9f92d0f25af58f402d39ecebea9d06d24d665d5ccea0bc61188596106e8944386e0204ed795701a30d9552dca5ba4ba054ac3aeeebc4570712be89aee08798be01"}'
     If validation fails, return the corresponding error message:
     > {"code":412,"message":"Invalid signature"}
     If validation succeed, return a true
