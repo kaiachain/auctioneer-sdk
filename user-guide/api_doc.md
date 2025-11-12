@@ -17,6 +17,12 @@ The auctioneer server exposes four APIs.
     :true,"searchers":1001}
     ```
 
+- `api/v1/auction/state`
+     ```shell
+     > curl "<auctioneer endpoint>/api/v1/auction/state?address=<your address>"
+     > {"blockNumber":<number>,"depositAmount":<number>,"nonce":<number>}
+     ```
+
 - `api/v1/auction/send`
     - Searchers can send a bid via this API. The simple usage is as follows:
     ```shell
