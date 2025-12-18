@@ -26,11 +26,11 @@ Please refer to the [guide](./user-guide)
 
 ### Auctioneer endpoint
 - Kairos: https://auctioneer-kairos.kaia.io
-- Mainnet: TBU
+- Mainnet: https://auctioneer.kaia.io
 
 ### Explorer
-- Kairos: https://mev-kairos.kaia.io/
-- Mainnet: TBU
+- Kairos: https://mev-kairos.kaia.io
+- Mainnet: https://mev.kaia.io
 
 ### Issues & Support
 If you have any questions or find a bug, please feel free to open an issue.
