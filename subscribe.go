@@ -18,7 +18,7 @@ var SEARCHER_SUBSCRIPTION_HEADER = "0xauc710neer"
 
 // GetSearcherSubscriptionNonceMsg returns subscription fingerprint
 func GetSearcherSubscriptionNonceMsg(nonce uint64) common.Hash {
-	msg := fmt.Sprintf("%s-%s", SEARCHER_SUBSCRIPTION_HEADER, nonce)
+	msg := fmt.Sprintf("%s-%d", SEARCHER_SUBSCRIPTION_HEADER, nonce)
 	return common.BytesToHash(crypto.Keccak256([]byte(msg)))
 }
 
