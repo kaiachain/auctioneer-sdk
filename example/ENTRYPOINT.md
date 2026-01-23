@@ -21,7 +21,8 @@ To prevent this issue, it's highly recommended to introduce the appropriate acce
 ```solidity
 interface IRegistry {
   // Kaia Registry (KIP-149) uses string-based names, e.g. "AuctionEntryPoint"
-  function getActiveAddr(string calldata name) external view returns (address);}
+  function getActiveAddr(string calldata name) external view returns (address);
+}
 
 contract Backrun {
   IRegistry constant REGISTRY = IRegistry(0x0000000000000000000000000000000000000401);
