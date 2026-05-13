@@ -14,6 +14,7 @@ type SendBid struct {
 	TargetTxRaw  hexutil.Bytes  `json:"targetTxRaw"`
 	TargetBlkNum uint64         `json:"targetBlkNum"`
 	Bid          hexutil.Big    `json:"bid"`
+	MaxGasPrice  *hexutil.Big   `json:"maxGasPrice,omitempty"`
 	Nonce        uint64         `json:"nonce"`
 	CallGasLimit uint64         `json:"callGasLimit"`
 	CallData     hexutil.Bytes  `json:"callData"`
@@ -28,13 +29,14 @@ type AuctionBid struct {
 	To           common.Address
 	Nonce        uint64
 	Bid          *big.Int
+	MaxGasPrice  *big.Int
 	CallGasLimit uint64
 	Data         []byte
 	SearcherSig  []byte
 }
 
 func NewAuctionBid(sender, toAddr common.Address, targetTxHash common.Hash, targetBlkNum,
-	bid *big.Int, nonce, callGasLimit uint64, callData, sig, targetTxRaw []byte,
+	bid, maxGasPrice *big.Int, nonce, callGasLimit uint64, callData, sig, targetTxRaw []byte,
 ) *AuctionBid {
 	return &AuctionBid{
 		TargetTxRaw:  targetTxRaw,
@@ -43,6 +45,7 @@ func NewAuctionBid(sender, toAddr common.Address, targetTxHash common.Hash, targ
 		TargetTxHash: targetTxHash,
 		BlockNumber:  targetBlkNum,
 		Bid:          bid,
+		MaxGasPrice:  maxGasPrice,
 		Nonce:        nonce,
 		CallGasLimit: callGasLimit,
 		Data:         callData,
