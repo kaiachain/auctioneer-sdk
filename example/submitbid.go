@@ -170,7 +170,7 @@ func genBid(c *client.Client, headerNum *big.Int) auction_sdk.SendBid {
 		tx.Hash(),
 		headerNum,
 		mustDecodeStrToKaia("1.0001"), // TODO: you can specify your desired specific amount of bidding
-		nil,
+		nil,                           // TODO(v3.0): set to target tx's GasFeeCap once PermissionlessHFBlock is activated
 		nonce.Uint64(),
 		GAS_LIMIT,
 		genContractCall(),
