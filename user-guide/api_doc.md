@@ -53,8 +53,7 @@ The auctioneer server exposes four APIs.
      ```
 
 ### Explorer and Dashboard links
-- Kairos: https://mev-kairos.kaia.io/
-- Mainnet: TBU
+- Mainnet: https://mev.kaia.io
 
 ### KIP-249
 - https://kips.kaia.io/KIPs/kip-249
