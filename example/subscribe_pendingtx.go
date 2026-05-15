@@ -33,7 +33,7 @@ func main() {
 		fmt.Println("Check searcher's private key")
 		panic(err)
 	}
-	url, err := auction_sdk.GetDialUrl("https://auction-mainnet.kaia.io", searcherKey)
+	url, err := auction_sdk.GetDialUrl("https://auctioneer.kaia.io", searcherKey)
 	if err != nil {
 		panic(err)
 	}

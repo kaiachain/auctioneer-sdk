@@ -61,7 +61,7 @@ var (
 	entrypoint     = common.HexToAddress("0xFc5c1C92d8DE06F7143f71FeA209e04042dcff82")
 	targetContract = common.HexToAddress("0xb9390D9d9465b40b3EB28b6236a3011A5004738B")
 
-	AUCTIONEER_HOST  = "auction-mainnet.kaia.io"
+	AUCTIONEER_HOST  = "auctioneer.kaia.io"
 	EN_ENDPOOINT_URL = "wss://public-en.node.kaia.io/ws"
 )
 
