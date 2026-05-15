@@ -170,14 +170,16 @@ func genBid(c *client.Client, headerNum *big.Int) auction_sdk.SendBid {
 		tx.Hash(),
 		headerNum,
 		mustDecodeStrToKaia("1.0001"), // TODO: you can specify your desired specific amount of bidding
-		nil,                           // TODO(v3.0): set to target tx's GasFeeCap once PermissionlessHFBlock is activated
+		nil, // set to target tx's GasFeeCap for v3.0 bids; nil for v2.1
 		nonce.Uint64(),
 		GAS_LIMIT,
 		genContractCall(),
 		nil,
 		toRlp(tx),
 	)
-	sendBid, err := auction_sdk.AuctionBidToSendBid(chainId, entrypoint, auctionBid, searcherKey)
+	// version should match AUCTION_VERSION() on the deployed EntryPoint ("0.0.1" = v2.1, "0.0.2" = v3.0)
+	version := "0.0.2"
+	sendBid, err := auction_sdk.AuctionBidToSendBid(chainId, entrypoint, auctionBid, searcherKey, version)
 	if err != nil {
 		panic(err)
 	}
