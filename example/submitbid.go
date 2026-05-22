@@ -50,7 +50,7 @@ const TARGET_CONTRACT_ABI_STR = `
 var (
 	TARGET_CONTRACT_ABI, _ = abi.JSON(bytes.NewReader([]byte(TARGET_CONTRACT_ABI_STR)))
 
-	chainId     = big.NewInt(1001)
+	chainId     = big.NewInt(8217)
 	GAS_LIMIT   = uint64(10000000)
 	signer      = types.LatestSignerForChainID(chainId)
 	searcherKey *ecdsa.PrivateKey
@@ -58,11 +58,11 @@ var (
 	searcher    common.Address
 	user        common.Address
 
-	entrypoint     = common.HexToAddress("0x2fF66A8b9f133ca4774bEAd723b8a92fA1e28480")
-	targetContract = common.HexToAddress("0xA9852ca2f22c218Ca4A9331710be287DA505E5C0")
+	entrypoint     = common.HexToAddress("0xFc5c1C92d8DE06F7143f71FeA209e04042dcff82")
+	targetContract = common.HexToAddress("0xb9390D9d9465b40b3EB28b6236a3011A5004738B")
 
-	AUCTIONEER_HOST  = "auctioneer-kairos.kaia.io"
-	EN_ENDPOOINT_URL = "wss://public-en-kairos.node.kaia.io/ws"
+	AUCTIONEER_HOST  = "auctioneer.kaia.io"
+	EN_ENDPOOINT_URL = "wss://public-en.node.kaia.io/ws"
 )
 
 func main() {
@@ -170,13 +170,16 @@ func genBid(c *client.Client, headerNum *big.Int) auction_sdk.SendBid {
 		tx.Hash(),
 		headerNum,
 		mustDecodeStrToKaia("1.0001"), // TODO: you can specify your desired specific amount of bidding
+		tx.GasFeeCap(), // v3.0 bids: must be >= targetTx.GasFeeCap(); set nil for v2.1
 		nonce.Uint64(),
 		GAS_LIMIT,
 		genContractCall(),
 		nil,
 		toRlp(tx),
 	)
-	sendBid, err := auction_sdk.AuctionBidToSendBid(chainId, entrypoint, auctionBid, searcherKey)
+	// version should match AUCTION_VERSION() on the deployed EntryPoint ("0.0.1" = v2.1, "0.0.2" = v3.0)
+	version := "0.0.2"
+	sendBid, err := auction_sdk.AuctionBidToSendBid(chainId, entrypoint, auctionBid, searcherKey, version)
 	if err != nil {
 		panic(err)
 	}

@@ -25,15 +25,16 @@ func getAuctionModuleBidWithoutAuctioneerSig(auction *AuctionBid) auction_module
 		To:           auction.To,
 		Nonce:        auction.Nonce,
 		Bid:          auction.Bid,
+		MaxGasPrice:  auction.MaxGasPrice,
 		CallGasLimit: auction.CallGasLimit,
 		Data:         auction.Data,
 	}
 	return auction_module.Bid{BidData: bidData}
 }
 
-func getAuctionDigest(auction *AuctionBid, chainId *big.Int, verifyingContract common.Address) []byte {
+func getAuctionDigest(auction *AuctionBid, chainId *big.Int, verifyingContract common.Address, version string) []byte {
 	bid := getAuctionModuleBidWithoutAuctioneerSig(auction)
-	return bid.GetHashTypedData(chainId, verifyingContract)
+	return bid.GetHashTypedData(chainId, verifyingContract, version)
 }
 
 // GetEntrypointNonce retrieves searcher's entrypoint nonce
@@ -58,14 +59,16 @@ func GetEntrypointNonce(c *client.Client, entrypoint, searcher common.Address) (
 	return nonce, nil
 }
 
-// AuctionBidToSendBid calculates searcher signature on given auction bid struct and returns it as form of `SendBid` struct
+// AuctionBidToSendBid calculates searcher signature on given auction bid struct and returns it as form of `SendBid` struct.
+// version is the AUCTION_VERSION string read from the deployed EntryPoint contract ("0.0.1" = v2.1, "0.0.2" = v3.0).
 func AuctionBidToSendBid(
 	chainId *big.Int,
 	entrypoint common.Address,
 	auctionBid *AuctionBid,
 	searcherKey *ecdsa.PrivateKey,
+	version string,
 ) (*SendBid, error) {
-	auctionTxHash := getAuctionDigest(auctionBid, chainId, entrypoint)
+	auctionTxHash := getAuctionDigest(auctionBid, chainId, entrypoint, version)
 	searcherSig, err := crypto.Sign(auctionTxHash, searcherKey)
 	if err != nil {
 		return nil, err
@@ -79,6 +82,7 @@ func AuctionBidToSendBid(
 		TargetTxRaw:  auctionBid.TargetTxRaw,
 		TargetBlkNum: auctionBid.BlockNumber.Uint64(),
 		Bid:          hexutil.Big(*auctionBid.Bid),
+		MaxGasPrice:  (*hexutil.Big)(auctionBid.MaxGasPrice),
 		Nonce:        auctionBid.Nonce,
 		CallGasLimit: auctionBid.CallGasLimit,
 		CallData:     auctionBid.Data,
