@@ -170,7 +170,7 @@ func genBid(c *client.Client, headerNum *big.Int) auction_sdk.SendBid {
 		tx.Hash(),
 		headerNum,
 		mustDecodeStrToKaia("1.0001"), // TODO: you can specify your desired specific amount of bidding
-		nil, // set to target tx's GasFeeCap for v3.0 bids; nil for v2.1
+		tx.GasFeeCap(), // v3.0 bids: must be >= targetTx.GasFeeCap(); set nil for v2.1
 		nonce.Uint64(),
 		GAS_LIMIT,
 		genContractCall(),

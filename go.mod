@@ -1,6 +1,6 @@
 module github.com/kaiachain/auctioneer-sdk
 
-go 1.25
+go 1.25.3
 
 replace (
 	github.com/erigontech/erigon-lib => github.com/kaiachain/kaia-erigon/erigon-lib v0.0.0-20251014143208-04410a8d11b7
@@ -9,7 +9,7 @@ replace (
 
 require (
 	github.com/gorilla/websocket v1.5.3
-	github.com/kaiachain/kaia v1.0.4-0.20251023020712-87f67895e3a8
+	github.com/kaiachain/kaia v1.0.4-0.20260522000658-bbf801cccc18
 )
 
 require (
@@ -29,7 +29,6 @@ require (
 	github.com/aws/aws-sdk-go v1.34.28 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bits-and-blooms/bitset v1.20.0 // indirect
-	github.com/btcsuite/btcd/btcec/v2 v2.3.4 // indirect
 	github.com/c2h5oh/datasize v0.0.0-20231215233829-aa82cc1e6500 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cilium/ebpf v0.11.0 // indirect
@@ -40,7 +39,7 @@ require (
 	github.com/cockroachdb/pebble v1.1.5 // indirect
 	github.com/cockroachdb/redact v1.1.5 // indirect
 	github.com/cockroachdb/tokenbucket v0.0.0-20230807174530-cc333fc44b06 // indirect
-	github.com/consensys/gnark-crypto v0.18.0 // indirect
+	github.com/consensys/gnark-crypto v0.18.1 // indirect
 	github.com/containerd/cgroups/v3 v3.0.3 // indirect
 	github.com/coreos/go-systemd/v22 v22.5.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.5 // indirect
@@ -57,9 +56,10 @@ require (
 	github.com/elastic/go-freelru v0.13.0 // indirect
 	github.com/erigontech/erigon-lib v0.0.0-00010101000000-000000000000 // indirect
 	github.com/erigontech/mdbx-go v0.39.8 // indirect
-	github.com/erigontech/secp256k1 v1.2.0 // indirect
+	github.com/erigontech/secp256k1 v1.2.1-0.20260221042510-ac99ccb83278 // indirect
 	github.com/erigontech/speedtest v0.0.2 // indirect
 	github.com/ethereum/c-kzg-4844/v2 v2.1.0 // indirect
+	github.com/ethereum/go-bigmodexpfix v0.0.0-20250911101455-f9e208c548ab // indirect
 	github.com/getsentry/sentry-go v0.27.0 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/go-redis/redis/v7 v7.4.0 // indirect
@@ -116,7 +116,7 @@ require (
 	github.com/steakknife/bloomfilter v0.0.0-20180922174646-6819c0d2a570 // indirect
 	github.com/steakknife/hamming v0.0.0-20180906055917-c99c65617cd3 // indirect
 	github.com/stretchr/testify v1.10.0 // indirect
-	github.com/supranational/blst v0.3.14 // indirect
+	github.com/supranational/blst v0.3.16 // indirect
 	github.com/syndtr/goleveldb v1.0.1-0.20210819022825-2ae1ddf74ef7 // indirect
 	github.com/tidwall/btree v1.6.0 // indirect
 	github.com/tinylib/msgp v1.1.2 // indirect
@@ -137,7 +137,7 @@ require (
 	golang.org/x/exp v0.0.0-20250128182459-e0ece0dbea4c // indirect
 	golang.org/x/net v0.38.0 // indirect
 	golang.org/x/sync v0.12.0 // indirect
-	golang.org/x/sys v0.31.0 // indirect
+	golang.org/x/sys v0.37.0 // indirect
 	golang.org/x/text v0.23.0 // indirect
 	golang.org/x/time v0.9.0 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
