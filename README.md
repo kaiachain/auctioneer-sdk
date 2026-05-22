@@ -1,6 +1,6 @@
 ### Auctioneer SDK
 
-> **⚠️ Notice (2026-05-22)**: MEV on Kaia is **tentatively suspended**. The auctioneer endpoint and contracts listed below may not be operational. Status updates will be posted in this README.
+> **⚠️ Notice (2026-05-15)**: MEV on Kaia is **tentatively suspended**. The auctioneer endpoint and contracts listed below may not be operational. Status updates will be posted in this README.
 
 This SDK provides a couple of functions to interact with auctioneer endpoint.
 The provided functions helps for:
